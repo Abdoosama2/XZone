@@ -1,37 +1,62 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using XZone_WEB.Models;
+using XZone_WEB.Models.DTO;
+using XZone_WEB.Models.DTO.GameDTOs;
 using XZone_WEB.Service.IService;
 using XZoneUtility;
 
 namespace XZone_WEB.Controllers
 {
-    public class GameDto : Controller
+    public class GameController : Controller
     {
+        //private readonly IMapper mapper;
         private readonly IGameService gameService;
-        private readonly IMapper mapper;
+        private readonly ICategoryService categoryService;
 
-        public GameDto(IGameService gameService ,IMapper mapper)
+        public GameController(IGameService gameService, ICategoryService categoryService)
         {
+           // this.mapper = mapper;
             this.gameService = gameService;
-            this.mapper = mapper;
-           
+            this.categoryService = categoryService;
         }
 
-
-        public async Task<IActionResult> GetAll()
+        public IActionResult Index()
         {
-            List<GameDto> GamesList = new List<GameDto>();
-
-            var response = await gameService.GetAllAsync<ApiResponse>();
-
-            if(response!=null &&response.IsSuccess)
-            {
-                GamesList = JsonConvert.DeserializeObject<List<GameDto>>(Convert.ToString(response.Result));
-            }
-            return View(GamesList);
+            return View();
         }
+
+        public async Task<IActionResult> Create()
+        {
+            var response = await categoryService.GetAllAsync<ApiResponse>();
+            List<CategoryDTO> categories = new List<CategoryDTO>();
+            if (response != null && response.IsSuccess)
+            {
+                categories = JsonConvert.DeserializeObject<List<CategoryDTO>>(Convert.ToString(response.Result));
+
+
+            }
+            var gameCreateDTO = new GameCreateDTO
+            {
+                Categories = categories.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                })
+            };
+
+
+            return View();
+        }
+
+        //[HttpPost]
+
+        //public async Task<IActionResult> Create(GameCreateDTO gameCreateDTO)
+        //{
+            
+        //}
     }
 }

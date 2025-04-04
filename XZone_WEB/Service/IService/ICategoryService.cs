@@ -5,7 +5,7 @@ namespace XZone_WEB.Service.IService
     public interface ICategoryService
     {
 
-        Task<T> GetAllAsync<T>(string token);
+        Task<T> GetAllAsync<T>();
         Task<T> GetAsync<T>(int id, string token);
 
         Task<T> CreateAsync<T>(CategoryCreateDto categorydto, string token);

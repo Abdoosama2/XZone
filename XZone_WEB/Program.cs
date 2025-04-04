@@ -23,6 +23,10 @@ namespace XZone_WEB
             builder.Services.AddHttpClient<IDeviceService, DeviceService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddHttpClient<IUserService, UserService>();
+            builder.Services.AddHttpClient(); // Required for IHttpClientFactory
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration); // Required for IConfiguration
+            builder.Services.AddScoped<IGameService, GameService>(); // Register your GameService
+
 
 
             var app = builder.Build();
