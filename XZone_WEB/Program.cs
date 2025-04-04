@@ -12,20 +12,21 @@ namespace XZone_WEB
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-
+            // Register core services first
+            builder.Services.AddHttpClient();
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
             builder.Services.AddAutoMapper(typeof(MappingConfig));
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // Register application services
             builder.Services.AddScoped<IGameService, GameService>();
-            builder.Services.AddHttpClient<IGameService, GameService>();
+
             builder.Services.AddScoped<ICategoryService, CategoryService>();
-            builder.Services.AddHttpClient<ICategoryService, CategoryService>();
+
             builder.Services.AddScoped<IDeviceService, DeviceService>();
-            builder.Services.AddHttpClient<IDeviceService, DeviceService>();
+
             builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddHttpClient<IUserService, UserService>();
-            builder.Services.AddHttpClient(); // Required for IHttpClientFactory
-            builder.Services.AddSingleton<IConfiguration>(builder.Configuration); // Required for IConfiguration
-            builder.Services.AddScoped<IGameService, GameService>(); // Register your GameService
+            // Register your GameService
 
 
 

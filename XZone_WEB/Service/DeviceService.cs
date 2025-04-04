@@ -39,14 +39,14 @@ namespace XZone_WEB.Service
             });
         }
 
-        public Task<T> GetAllAsync<T>(string token)
+        public Task<T> GetAllAsync<T>()
         {
             return SendAsync<T>(new ApiRequest
             {
                 ApiType = SD.ApiType.Get,
 
                 URL = _DeviceURL + "/api/Device/",
-                Token = token,
+               // Token = token,
 
             });
         }

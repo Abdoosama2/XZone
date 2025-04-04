@@ -1,9 +1,7 @@
-﻿
-@model GameCreateDTO
+﻿@model GameCreateDTO
 
 @{
     ViewData["Title"] = "Add Game";
-
 }
 
 <h5>
@@ -11,7 +9,7 @@
     Add a new game
 </h5>
 
-<form asp-controller="Games" enctype="multipart/form-data">
+<form asp-controller="Game" asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -21,9 +19,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="form-label mt-4"></label>
-                <select class="form-select" asp-for="CategoryId" asp-items="Model.Categories"
+                <select class="form-select" asp-for="CategoryId" asp-items="@Model.Categories"
                         data-placeholder="Select a category" data-minimum-results-for-search="Infinity">
-                    <option value=""></option>
+                    <option value="">Select a category</option>
                 </select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
@@ -40,17 +38,17 @@
                 <textarea asp-for="Description" class="form-control" placeholder="Description"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-           @*  <div class="form-group">
+            <div class="form-group">
                 <label asp-for="ImageURL" class="form-label mt-4"></label>
-                <input type="file" class="form-control" asp-for="ImageURL"
-                       data-rule-extension="@FileSe ttings.AllowedExtensions.Replace(".", string.Empty)"
-                       data-msg-extension="Not allowed extension"
-                       data-rule-filesize="@FileSettings.MaxFileSizeInBytes"
-                       data-msg-filesize="Maximum allowed size is @FileSettings.MaxFileSizeInMB MB">
-                <small class="form-text text-muted">Only @FileSettings.AllowedExtensions files are allowed with max size @(FileSettings.MaxFileSizeInMB)MB.</small>
+                <input type="file" class="form-control" asp-for="ImageURL" accept=".jpg,.jpeg,.png"
+                       data-rule-extension="jpg,jpeg,png"
+                       data-msg-extension="Only JPG, JPEG, and PNG files are allowed"
+                       data-rule-filesize="5242880"
+                       data-msg-filesize="Maximum allowed size is 5MB">
+                <small class="form-text text-muted">Only JPG, JPEG, and PNG files are allowed with max size 5MB.</small>
                 <span asp-validation-for="ImageURL" class="text-danger d-block"></span>
-            </div> *@
-            <button type="submit" class="btn btn-light text-black mt-4">Save</button>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">Save</button>
         </div>
         <div class="col-md-6 d-flex justify-content-center pt-4 overflow-hidden">
             <img class="cover-preview d-none" alt="Cover" />

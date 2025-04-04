@@ -15,14 +15,14 @@ namespace XZone_WEB.Service
             _GameURL = config.GetValue<string>("ServiceUrls:XZoneAPI");
         }
 
-        public Task<T> CreateAsync<T>(GameCreateDTO GameDto, string token)
+        public Task<T> CreateAsync<T>(GameCreateDTO GameDto)
         {
             return SendAsync<T>(new ApiRequest
             {
                 ApiType=SD.ApiType.Post,
                 Data= GameDto,
                 URL=_GameURL+"/api/Game/",
-                Token=token,
+               // Token=token,
 
             });
         }
