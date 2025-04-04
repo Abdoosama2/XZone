@@ -26,7 +26,7 @@ namespace XZone.Controllers
             this._response = new ApiResponse();
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
 
         public async Task<ActionResult<ApiResponse>> GetAll()
         {
@@ -47,7 +47,7 @@ namespace XZone.Controllers
 
 
 
-        [HttpGet("GetDeviceById{Id}")]
+        [HttpGet("{Id}")]
 
         public async Task<ActionResult<ApiResponse>> GetDeviceById(int Id)
         {
@@ -80,7 +80,7 @@ namespace XZone.Controllers
 
         }
 
-        [HttpPost("AddDevice")]
+        [HttpPost()]
         public async Task<ActionResult<ApiResponse>> CreateDevice([FromBody] DeviceCreateDTO DeviceCreateDto)
         {
             if (!ModelState.IsValid)
@@ -102,7 +102,7 @@ namespace XZone.Controllers
 
         }
 
-        [HttpDelete("DeleteDevice{Id}")]
+        [HttpDelete("{Id}")]
         public async Task<ActionResult<ApiResponse>> DeleteDevice(int Id)
         {
 
@@ -125,7 +125,7 @@ namespace XZone.Controllers
             return Ok(_response);
         }
 
-        [HttpPut("UpdateDevice{Id}")]
+        [HttpPut("{Id}")]
 
         public async Task<ActionResult<ApiResponse>> UpdateDevice(int Id, [FromBody] DeviceUpdatedDTO DeviceUpdated)
         {

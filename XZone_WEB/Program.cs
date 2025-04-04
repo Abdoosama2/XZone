@@ -1,3 +1,6 @@
+using XZone_WEB.Service;
+using XZone_WEB.Service.IService;
+
 namespace XZone_WEB
 {
     public class Program
@@ -8,6 +11,19 @@ namespace XZone_WEB
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
+            builder.Services.AddAutoMapper(typeof(MappingConfig));
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddScoped<IGameService, GameService>();
+            builder.Services.AddHttpClient<IGameService, GameService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddHttpClient<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IDeviceService, DeviceService>();
+            builder.Services.AddHttpClient<IDeviceService, DeviceService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddHttpClient<IUserService, UserService>();
+
 
             var app = builder.Build();
 

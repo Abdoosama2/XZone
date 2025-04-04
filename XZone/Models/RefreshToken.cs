@@ -1,5 +1,9 @@
-﻿namespace XZone.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace XZone.Models
 {
+
+    [Owned] 
     public class RefreshToken
     {
 

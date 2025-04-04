@@ -26,7 +26,7 @@ namespace XZone.Controllers
             this.categoryRepository = categoryRepository;
             this._response = new ApiResponse();
         }
-        [HttpGet("GetAll")]
+        [HttpGet]
 
         public async Task<ActionResult<ApiResponse>> GetAll()
         {
@@ -47,7 +47,7 @@ namespace XZone.Controllers
 
 
 
-        [HttpGet("GetGameById{Id}")]
+        [HttpGet("{Id}")]
 
         public async Task<ActionResult<ApiResponse>> GetGameById(int Id)
         {
@@ -80,7 +80,7 @@ namespace XZone.Controllers
 
         }
 
-        [HttpPost("AddGame")]
+        [HttpPost]
         public async Task<ActionResult<ApiResponse>> CreateGame([FromBody] GameCreateDTO GameCreateDto)
         {
             if (!ModelState.IsValid)
@@ -110,7 +110,7 @@ namespace XZone.Controllers
 
         }
 
-        [HttpDelete("DeleteGame{Id}")]
+        [HttpDelete("{Id}")]
         public async Task<ActionResult<ApiResponse>> DeleteGame(int Id)
         {
 
@@ -133,7 +133,7 @@ namespace XZone.Controllers
             return Ok(_response);
         }
 
-        [HttpPut("UpdateGame{Id}")]
+        [HttpPut("{Id}")]
 
         public async Task<ActionResult<ApiResponse>> UpdateGame(int Id, [FromBody] GameUpdateDTO GameUpdated)
         {

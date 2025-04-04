@@ -27,7 +27,7 @@ namespace XZone.Controllers
         //  [ProducesResponseType(StatusCodes.Status403Forbidden)]
         // [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         //[ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpGet("GetAll")]
+        [HttpGet]
         public async Task<ActionResult<ApiResponse>> GetAll()
         {
             var CategoryList = await repository.GetAllAsync();
@@ -45,7 +45,7 @@ namespace XZone.Controllers
             return Ok(_response);
         }
 
-        [HttpGet("GetCategoryById{Id}")]
+        [HttpGet("{Id}")]
 
         public async Task<ActionResult<ApiResponse>> GetCategoryById(int Id)
         {
@@ -78,7 +78,7 @@ namespace XZone.Controllers
 
         }
 
-        [HttpPost("AddCategory")]
+        [HttpPost]
         public async Task<ActionResult<ApiResponse>> CreateCategory([FromBody] CategoryCreateDto categoryCreateDto)
         {
             if (!ModelState.IsValid)
@@ -100,7 +100,7 @@ namespace XZone.Controllers
 
         }
 
-        [HttpDelete("DeleteCategory{Id}")]
+        [HttpDelete("{Id}")]
         public async Task<ActionResult<ApiResponse>> DeleteCategory(int Id)
         {
 
@@ -123,7 +123,7 @@ namespace XZone.Controllers
             return Ok(_response);
         }
 
-        [HttpPut("UpdateCategory{Id}")]
+        [HttpPut("{Id}")]
 
         public async Task<ActionResult<ApiResponse>> UpdateCategory(int Id, [FromBody] CategoryUpdatedDTO categoryUpdated)
         {
