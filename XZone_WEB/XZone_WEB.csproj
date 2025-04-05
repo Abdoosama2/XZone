@@ -16,4 +16,8 @@
     <ProjectReference Include="..\XZoneUtility\XZoneUtility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\assests\Images\Games\" />
+  </ItemGroup>
+
 </Project>

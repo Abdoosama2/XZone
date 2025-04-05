@@ -10,6 +10,8 @@ namespace XZone_WEB.Models.DTO.GameDTOs
         public string Name { get; set; }
 
        
+        public string ImagePath { get; set; }
+
         [MaxLength(300)]
         public IFormFile ImageURL { get; set; }
         [ForeignKey("Category")]

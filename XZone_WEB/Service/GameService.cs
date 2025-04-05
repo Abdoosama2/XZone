@@ -1,4 +1,6 @@
-﻿using XZone_WEB.Models.DTO.GameDTOs;
+﻿using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using XZone_WEB.Models.DTO.GameDTOs;
 using XZone_WEB.Service.IService;
 using XZoneUtility;
 
@@ -8,24 +10,42 @@ namespace XZone_WEB.Service
     {
 
         private readonly IHttpClientFactory _factory;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly string _imagesPath;
+
         private string _GameURL;
-        public GameService(IHttpClientFactory httpClientFactory ,IConfiguration config) : base(httpClientFactory)
+        public GameService(IHttpClientFactory httpClientFactory, IConfiguration config, IWebHostEnvironment webHostEnvironment) : base(httpClientFactory)
         {
             _factory = httpClientFactory;
             _GameURL = config.GetValue<string>("ServiceUrls:XZoneAPI");
+            _webHostEnvironment = webHostEnvironment;
+            _imagesPath = $"{webHostEnvironment.ContentRootPath}/assests/Images/Games";
         }
 
-        public Task<T> CreateAsync<T>(GameCreateDTO GameDto)
+        public async Task<T> CreateAsync<T>(GameCreateDTO GameDto)
         {
-            return SendAsync<T>(new ApiRequest
-            {
-                ApiType=SD.ApiType.Post,
-                Data= GameDto,
-                URL=_GameURL+"/api/Game/",
-               // Token=token,
+            var coverName = $"{Guid.NewGuid()}{Path.GetExtension(GameDto.ImageURL.FileName)}";
+            var path = Path.Combine(_imagesPath, coverName);
 
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await GameDto.ImageURL.CopyToAsync(stream);
+            }
+
+            // Set image path in DTO to be stored in the API/database
+            GameDto.ImagePath = "/images/" + coverName;
+
+            // Avoid sending file content to API
+            GameDto.ImageURL = null;
+
+            return await SendAsync<T>(new ApiRequest
+            {
+                ApiType = SD.ApiType.Post,
+                Data = GameDto,
+                URL = _GameURL + "/api/Game/",
             });
         }
+
 
         public Task<T> DeleteAsync<T>(int id, string token)
         {
