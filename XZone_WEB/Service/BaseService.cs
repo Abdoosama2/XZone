@@ -27,11 +27,13 @@ namespace XZone_WEB.Service
                 HttpRequestMessage message = new HttpRequestMessage();
                 message.Headers.Add("Accept", "application/json");
                 message.RequestUri = new Uri(request.URL);
-                if (request.Data != null)
+                if (request.Data is MultipartFormDataContent multiPartContent)
                 {
-                    message.Content = new StringContent(JsonConvert.SerializeObject(request.Data)
-                        , Encoding.UTF8, "application/json");
-
+                    message.Content = multiPartContent;
+                }
+                else if (request.Data != null)
+                {
+                    message.Content = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
                 }
                 switch (request.ApiType)
                 {
@@ -60,26 +62,28 @@ namespace XZone_WEB.Service
 
                 try
                 {
-                    ApiResponse ApiResponse = JsonConvert.DeserializeObject<ApiResponse>(apicontent);
-                    if (ApiResponse != null && (apiresonee.StatusCode == System.Net.HttpStatusCode.BadRequest ||
+                    var ApiResponse = JsonConvert.DeserializeObject<T>(apicontent);
+                    if (ApiResponse is ApiResponse response && (apiresonee.StatusCode == System.Net.HttpStatusCode.BadRequest ||
                         apiresonee.StatusCode == System.Net.HttpStatusCode.NotFound))
                     {
-                        ApiResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
-                        ApiResponse.IsSuccess = false;
-                        var result = JsonConvert.SerializeObject(ApiResponse);
-                        var ReturnObj = JsonConvert.DeserializeObject<T>(result);
-                        return ReturnObj;
-
+                        response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                        response.IsSuccess = false;
+                        return ApiResponse;
                     }
+                    return ApiResponse;
                 }
                 catch (Exception ex)
                 {
+                    var dto = new ApiResponse()
+                    {
+                        ErrorMessages = new List<string> { Convert.ToString(ex.Message) },
+                        IsSuccess = false
+                    };
 
-                    var ExpectionResult = JsonConvert.DeserializeObject<T>(apicontent);
-                    return ExpectionResult;
+                    var result = JsonConvert.SerializeObject(dto);
+                    var ApiResponse = JsonConvert.DeserializeObject<T>(result);
+                    return ApiResponse;
                 }
-                var Apiresponse = JsonConvert.DeserializeObject<T>(apicontent);
-                return Apiresponse;
             }
             catch (Exception ex)
             {
@@ -94,7 +98,10 @@ namespace XZone_WEB.Service
                 return ApiResponse;
 
             }
-        
+
+
+
+
 
 
         }

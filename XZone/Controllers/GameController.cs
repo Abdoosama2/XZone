@@ -88,26 +88,26 @@ namespace XZone.Controllers
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
                 var errors = ModelState.Values
-             .SelectMany(v => v.Errors)
-             .Select(e => e.ErrorMessage)
-             .ToList();
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
                 _response.ErrorMessages = errors;
                 return BadRequest(_response);
             }
 
-            if (GameCreateDto.CategoryId == 0||(await categoryRepository.GetAsync(x=>x.Id==GameCreateDto.CategoryId)==null))
+            if (GameCreateDto.CategoryId == 0 || (await categoryRepository.GetAsync(x => x.Id == GameCreateDto.CategoryId) == null))
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.ErrorMessages.Add("Invalid Category ID");
                 return BadRequest(_response);
             }
-            var NewGame = mapper.Map<Game>(GameCreateDto);
+
+            var NewGame = mapper.Map<Game>(GameCreateDto); // Ensure your mapping handles ImageURL
             await gameRepository.CreateAsync(NewGame);
             _response.StatusCode = HttpStatusCode.Created;
             _response.IsSuccess = true;
             return Ok(_response);
-
         }
 
         [HttpDelete("{Id}")]
